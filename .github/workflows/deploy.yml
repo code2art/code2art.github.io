@@ -1,10 +1,4 @@
 name: Deploy to GitHub Pages
-- name: Install dependencies
-  # 加上 --force 跳過同級依賴檢查
-  run: npm install --force
-
-- name: Build Astro
-  run: npm run build
 
 on:
   push:
@@ -29,11 +23,10 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        # 強制使用 install，跳過嚴格的 ci 檢查
-        run: npm install
+        # 這裡加上 --force 以解決 Tailwind 4 的依賴衝突問題
+        run: npm install --force
 
       - name: Build Astro
-        # 這裡加上一個簡單的編譯指令
         run: npm run build
 
       - name: Upload artifact
