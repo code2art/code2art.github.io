@@ -1,11 +1,12 @@
 import { defineConfig } from 'astro/config';
-import tailwindcss from '@tailwindcss/vite';
+import tailwindcss from '@tailwindcss/vite'; // 改用 vite 插件
+import react from '@astrojs/react';
 
 export default defineConfig({
-  // 必須與你的 GitHub Pages 地址完全一致
   site: 'https://code2art.github.io',
-  base: '/', 
+  base: '/',
+  integrations: [react()], // 移除 tailwind() 整合
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss()], // 在這裡啟用 tailwind v4
   },
 });

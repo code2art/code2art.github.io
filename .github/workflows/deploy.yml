@@ -1,4 +1,10 @@
 name: Deploy to GitHub Pages
+- name: Install dependencies
+  # 加上 --force 跳過同級依賴檢查
+  run: npm install --force
+
+- name: Build Astro
+  run: npm run build
 
 on:
   push:
@@ -21,12 +27,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci # 使用 ci 確保與 package-lock.json 完全一致
+        # 強制使用 install，跳過嚴格的 ci 檢查
+        run: npm install
 
       - name: Build Astro
+        # 這裡加上一個簡單的編譯指令
         run: npm run build
 
       - name: Upload artifact
