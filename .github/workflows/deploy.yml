@@ -17,22 +17,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Install, build, and upload your site
+        # 使用 Astro 官方 Action，它會自動識別 package.json 並處理依賴
+        uses: withastro/action@v3
         with:
+          # 告訴它強制使用 Node 22 以匹配你本地環境
           node-version: 22
-
-      - name: Install dependencies
-        # 使用 legacy-peer-deps 強制忽略所有同級依賴衝突
-        run: npm install --legacy-peer-deps
-
-      - name: Build Astro
-        run: npm run build
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist
 
   deploy:
     needs: build
