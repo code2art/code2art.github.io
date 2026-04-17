@@ -23,8 +23,8 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        # 這裡加上 --force 以解決 Tailwind 4 的依賴衝突問題
-        run: npm install --force
+        # 使用 legacy-peer-deps 強制忽略所有同級依賴衝突
+        run: npm install --legacy-peer-deps
 
       - name: Build Astro
         run: npm run build
