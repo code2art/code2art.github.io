@@ -1,0 +1,70 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+:root {
+  --color-paper: #fcfaf2;
+  --color-ink: #1a1a1a;
+  --color-vermilion: #b91c1c;
+  --color-code-bg: #1e1e1e;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-size: clamp(16px, 1.2vw, 18px);
+  /* 修正優先級：Webfont 放在最前面 */
+  font-family: 'Noto Serif TC', "Songti SC", "STSong", serif;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+}
+
+.prose {
+  max-width: none;
+  line-height: clamp(1.8, 2.5vw, 2.2);
+  letter-spacing: 0.05em;
+  color: var(--color-ink);
+}
+
+.prose h1, .prose h2, .prose h3 {
+  /* 標題字重加強 */
+  font-family: 'Noto Serif TC', serif;
+  font-weight: 900;
+  color: #000;
+  margin-top: 2.5em;
+}
+
+.prose h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-bottom: 2px solid #e2e2d0;
+  padding-bottom: 0.5rem;
+}
+
+.prose h2::before {
+  content: "";
+  width: 5px;
+  height: 1.1em;
+  background-color: var(--color-vermilion);
+  display: inline-block;
+}
+
+.prose pre {
+  background-color: var(--color-code-bg) !important;
+  color: #e5e7eb !important;
+  padding: 1.5rem !important;
+  border-radius: 4px;
+  margin: 2rem 0;
+  font-size: 14px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.prose img {
+  border-radius: 2px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid #d1d5db;
+  margin: 4rem auto;
+  width: 100%;
+}

@@ -1,0 +1,43 @@
+---
+import { getCollection, render } from 'astro:content';
+// 注意這裡的跳轉路徑：向上三層回到 src
+import Layout from '../../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('blog');
+  return pages.map((page) => {
+    const [lang, ...slug] = page.id.split('/');
+    return {
+      params: { lang, slug: slug.join('/') || undefined },
+      props: { page },
+    };
+  });
+}
+
+const { page } = Astro.props;
+const { lang } = Astro.params;
+const { Content } = await render(page);
+---
+
+<Layout title={page.data.title} lang={lang}>
+  <div class="relative w-full">
+    <aside class="hidden 2xl:block absolute -left-48 top-0 [writing-mode:vertical-rl] text-gray-200 font-serif tracking-[2.5em] select-none opacity-40">
+      {lang === 'zh' ? '自重啟之路 ｜ 貳零貳陸 ｜ 歧言謬語' : 'LIFE RESTART ｜ 2026 ｜ QI YAN MIU YU'}
+    </aside>
+
+    <article class="prose">
+      <header class="not-prose mb-16 md:mb-24 border-b-8 border-double border-gray-200 pb-10">
+        <h1 class="font-serif leading-tight tracking-tight text-black text-4xl md:text-6xl font-bold mb-8">
+          {page.data.title}
+        </h1>
+        <div class="flex items-center gap-6 text-sm md:text-lg text-gray-400 font-serif italic">
+          <time>{page.data.date.toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+          <span class="opacity-20">/</span>
+          <span>{lang === 'zh' ? '蚩尤 撰' : 'By Chi You'}</span>
+        </div>
+      </header>
+
+      <Content />
+    </article>
+  </div>
+</Layout>

@@ -1,0 +1,39 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ui } from '../../i18n/ui';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  return Object.keys(ui).map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params;
+
+// 首頁也可以順便抓取最新的 3 篇文章展示
+const posts = (await getCollection('blog', ({ id }) => id.startsWith(`${lang}/`)))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+---
+
+<Layout lang={lang}>
+  <section class="mb-16">
+    <h1 class="text-4xl font-bold mb-4">{lang === 'zh' ? '不合時宜的文字與聲音' : 'Out of Sync Words & Sounds'}</h1>
+    <p class="text-gray-500 text-lg leading-relaxed">
+      {lang === 'zh' 
+        ? '這裡是蚩尤的自留地。沒有雞湯，沒有乾貨，只有對現實的冷眼旁觀與歧言謬語。' 
+        : 'This is Chiyou\'s personal space. No clichés, no "hacks," only cold observations and unconventional words.'}
+    </p>
+  </section>
+
+  <section class="space-y-8">
+    <h2 class="text-xl font-bold border-l-4 border-black pl-4">{lang === 'zh' ? '最新發佈' : 'Latest'}</h2>
+    <div class="grid gap-6">
+      {posts.map(post => (
+        <a href={`/${lang}/blog/${post.id.split('/').pop()}`} class="group">
+          <time class="text-sm text-gray-400">{post.data.date.toISOString().split('T')[0]}</time>
+          <h3 class="text-xl font-bold group-hover:text-blue-600 transition">{post.data.title}</h3>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>

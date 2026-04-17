@@ -1,0 +1,43 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ui } from '../../i18n/ui';
+
+export async function getStaticPaths() {
+  return Object.keys(ui).map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params;
+---
+
+<Layout title={lang === 'zh' ? '歧言謬語 | 播客' : 'Qi Yan Miu Yu | Podcast'} lang={lang}>
+  <div class="space-y-12">
+    <header>
+      <h1 class="text-3xl font-bold">{lang === 'zh' ? '歧言謬語' : 'Qi Yan Miu Yu'}</h1>
+      <p class="text-gray-500 mt-4 leading-relaxed">
+        {lang === 'zh' 
+          ? '這是一個不合時宜的播客。我們討論世界體系、勞動經濟，以及那些被主流敘事閹割的神話碎片。' 
+          : 'An out-of-sync podcast. We discuss world-systems, labor economics, and the fragments of mythology cut from mainstream narratives.'}
+      </p>
+    </header>
+
+    <section class="bg-gray-50 p-6 rounded-2xl border border-gray-100">
+      <h2 class="text-lg font-bold mb-4">{lang === 'zh' ? '最新集數' : 'Latest Episode'}</h2>
+      <iframe 
+        allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" 
+        frameborder="0" 
+        height="175" 
+        style="width:100%;max-width:100%;overflow:hidden;background:transparent;" 
+        sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" 
+        src="https://embed.podcasts.apple.com/us/podcast/id1733246714">
+      </iframe>
+    </section>
+
+    <section class="grid gap-6">
+      <h2 class="text-xl font-bold">{lang === 'zh' ? '訂閱渠道' : 'Subscribe'}</h2>
+      <div class="flex gap-4">
+        <a href="#" class="px-4 py-2 bg-black text-white rounded-full text-sm font-medium hover:bg-gray-800 transition">Apple Podcasts</a>
+        <a href="#" class="px-4 py-2 border border-gray-200 rounded-full text-sm font-medium hover:bg-gray-50 transition">RSS Feed</a>
+      </div>
+    </section>
+  </div>
+</Layout>

@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+import { ui } from '../../../i18n/ui';
+
+export async function getStaticPaths() {
+  return Object.keys(ui).map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params;
+
+// 根據路徑前綴（zh/ 或 en/）過濾文章
+const posts = (await getCollection('blog', ({ id }) => id.startsWith(`${lang}/`)))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<Layout lang={lang} title={lang === 'zh' ? '文章列表' : 'Articles'}>
+  <h1 class="text-3xl font-bold mb-10 italic uppercase tracking-tighter">
+    {lang === 'zh' ? '所有文章' : 'All Articles'}
+  </h1>
+  
+  <div class="space-y-12">
+    {posts.map(post => (
+      <article class="group relative">
+        <time class="text-sm text-gray-400 font-mono">{post.data.date.toISOString().split('T')[0]}</time>
+        <a href={`/${lang}/blog/${post.id.split('/').pop()}`} class="block mt-2">
+          <h2 class="text-2xl font-bold group-hover:text-blue-600 transition">
+            {post.data.title}
+          </h2>
+        </a>
+      </article>
+    ))}
+
+    {posts.length === 0 && <p class="text-gray-400">Coming soon...</p>}
+  </div>
+</Layout>
